@@ -4,7 +4,7 @@ const userSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
-    unique: true, // this ensures the uniqueness of username
+    unique: true, // ensures uniqueness of username
   },
   name: String,
   passwordHash: String,
@@ -14,6 +14,12 @@ const userSchema = new mongoose.Schema({
       ref: "Note",
     },
   ],
+  blogs: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Blog", // Reference to blogs
+    },
+  ],
 });
 
 userSchema.set("toJSON", {
@@ -21,8 +27,7 @@ userSchema.set("toJSON", {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
     delete returnedObject.__v;
-    // the passwordHash should not be revealed
-    delete returnedObject.passwordHash;
+    delete returnedObject.passwordHash; // Don't reveal password hash
   },
 });
 
